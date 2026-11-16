@@ -2311,4 +2311,18 @@ body { background: #fffefa; }
   .section-heading { margin-bottom: 1.8rem; }
   .detail-hero { padding-top: 1.25rem; }
   .detail-copy h1 { letter-spacing: -.045em; }
+  .hero-media { height: auto; aspect-ratio: 16 / 9; padding-inline: 0; background: transparent; }
+  .hero-media img { object-fit: cover; object-position: center; }
+}
+
+@media (max-width: 520px) {
+  .header-inner { gap: .5rem; }
+  .brand { min-width: 0; gap: .55rem; }
+  .brand-mark { width: 44px; height: 44px; flex: 0 0 44px; }
+  .brand img { width: 44px; height: 44px; }
+  .brand > span:last-child { min-width: 0; }
+  .brand strong { font-size: 1rem; }
+  .brand small { display: none; }
+  .header-actions { flex: 0 0 auto; }
+  .menu-toggle { width: 42px; height: 42px; }
 }

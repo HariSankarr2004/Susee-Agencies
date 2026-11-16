@@ -24,14 +24,14 @@ const products = [
     summary: 'Soft, breathable and highly absorbent 100% pure cotton gauze fabric.',
     description:
       'Absorbent Gauze Cloth is a soft, breathable and highly absorbent fabric made from 100% pure cotton yarn. It is specially woven to provide superior absorbency and is used in medical dressings and wound care products.',
-    sizes: ['90cms to 120cms', '10mtr to 50mtr'],
+    sizes: ['100cm to 120cm', '10mtr to 40mtr'],
     features: ['100% pure cotton yarn', 'Superior absorbency', 'Breathable woven fabric', 'Soft contact surface'],
     applications: ['Medical dressings', 'Wound care products', 'Clinical supplies'],
     specifications: [
       { label: 'Material', value: '100% Pure Woven Cotton' },
       { label: 'Thread Count', value: '19 x 15 threads/inch² (or BP Type 13 / 17)' },
-      { label: 'Standard Widths', value: '90 cm, 100 cm, 120 cm' },
-      { label: 'Roll Lengths', value: '10 meters to 100 meters' },
+      { label: 'Standard Widths', value: '100 cm, 120 cm' },
+      { label: 'Roll Lengths', value: '10 meters to 40 meters' },
       { label: 'Sterility', value: 'Non-Sterile (Autoclavable)' },
       { label: 'Absorption Rate', value: 'Sinks in less than 10 seconds' },
       { label: 'Packaging', value: 'Individually wrapped rolls in master cardboard cartons' }
@@ -43,14 +43,14 @@ const products = [
     summary: 'High-quality woven cotton fabric used in medical bandage manufacturing.',
     description:
       'Bandage Cloth is a high-quality woven cotton fabric used in the manufacturing of medical bandages. Made from 100% pure cotton yarn, it is breathable, soft and designed for use around fractures, surgical dressings and wound care support.',
-    sizes: ['90cms to 120cms', '10mtr to 50mtr'],
+    sizes: ['100cm to 120cm', '10mtr to 40mtr'],
     features: ['High-quality woven cotton', 'Soft and breathable', 'Suitable for repeated wrapping', 'Bulk roll format'],
     applications: ['Medical bandages', 'Fracture support', 'Surgical dressing support', 'General wound care'],
     specifications: [
       { label: 'Material', value: '100% Cotton Woven Fabric' },
       { label: 'Weave Type', value: 'Plain weave with selvage edge support' },
-      { label: 'Standard Widths', value: '90 cm, 100 cm, 120 cm' },
-      { label: 'Roll Lengths', value: '10 meters to 50 meters' },
+      { label: 'Standard Widths', value: '100 cm, 120 cm' },
+      { label: 'Roll Lengths', value: '10 meters to 40 meters' },
       { label: 'Thread Count', value: '17-thread count standard mesh' },
       { label: 'Sterility', value: 'Non-Sterile' },
       { label: 'Packaging', value: 'Protective inner poly sleeve with bulk transport cartons' }
@@ -112,6 +112,7 @@ const products = [
       { label: 'Packaging', value: 'Individually wrapped or blister-packed' }
     ]
   },
+  /* Products unavailable for supply are kept commented out until confirmed.
   {
     slug: 'gauze-dressing-pad',
     name: 'Gauze Dressing Pad - Sterile and Non-Sterile',
@@ -221,6 +222,7 @@ const products = [
       { label: 'Packaging', value: 'Individually wrapped in blue craft paper or moisture-proof poly bag' }
     ]
   },
+  */
   {
     slug: 'cotton-balls',
     name: 'Cotton Balls',
@@ -236,6 +238,23 @@ const products = [
       { label: 'Consistency', value: 'Uniform round shape, soft and fluffy' },
       { label: 'Sterility', value: 'Non-Sterile' },
       { label: 'Packaging', value: 'Packets of 100s, 500s or custom count poly packs' }
+    ]
+  },
+  {
+    slug: 'c-arm-cover',
+    name: 'C-Arm Cover',
+    summary: 'Clear disposable protective cover for C-arm imaging equipment.',
+    description:
+      'C-Arm Cover is a clear, flexible protective cover designed to fit the imaging head of a C-arm unit. Its lightweight drape helps keep the equipment covered during clinical procedures. Contact us for sizing and packing details.',
+    sizes: ['Available on enquiry', 'Custom fit options on request'],
+    features: ['Clear flexible film', 'Protective equipment barrier', 'Designed for C-arm imaging heads', 'Disposable format'],
+    applications: ['C-arm imaging equipment', 'Procedure rooms', 'Hospital and clinic supply'],
+    specifications: [
+      { label: 'Product type', value: 'Disposable C-arm equipment cover' },
+      { label: 'Material', value: 'Transparent flexible plastic film' },
+      { label: 'Fit', value: 'C-arm imaging head; confirm dimensions when ordering' },
+      { label: 'Size', value: 'Available on enquiry' },
+      { label: 'Packaging', value: 'Contact us for available pack quantities' }
     ]
   },
   {
@@ -341,6 +360,7 @@ const categoryBySlug = {
   'patient-gown': 'Hospital Wear & Disposables',
   'surgeon-doctor-gown': 'Hospital Wear & Disposables',
   'disposables-bed-sheet-pillow-cover': 'Hospital Wear & Disposables',
+  'c-arm-cover': 'Hospital Wear & Disposables',
   'dialysis-kit': 'Hospital Wear & Disposables',
 };
 
