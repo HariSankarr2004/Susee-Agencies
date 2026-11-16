@@ -382,7 +382,7 @@ const companyName = 'Susee Agencies';
 const whatsappNumber = '919345782296';
 const phones = [{ display: '+91 93457 82296', tel: '+919345782296' }];
 const emails = ['suseeagencies2004@gmail.com'];
-const address = '8/162, Chatrapatti - Srivilliputhur Rd, Sankarapandiapuram, Samsigapuram, Tamil Nadu 626102';
+const address = '8/162, Chatrapatti - Srivilliputhur Rd, Sankarapandiapuram, Tamil Nadu 626102';
 const businessHours = 'Mon–Sat: 8:30 AM–6:30 PM; Sun: 8:30 AM–3:30 PM';
 const mapQuery = encodeURIComponent(
   `${companyName}, ${address}, India`
@@ -640,7 +640,7 @@ function TopBar() {
   return (
     <div className="topbar">
       <div className="shell topbar-inner">
-        <span>Samsigapuram, Tamil Nadu, India</span>
+        <span>Sankarapandiapuram, Tamil Nadu, India</span>
         <div className="topbar-links">
           <a href={`tel:${phones[0].tel}`}><PhoneIcon size={14} /> {phones[0].display}</a>
           <a href={`mailto:${emails[0]}`}><MailIcon size={14} /> {emails[0]}</a>
@@ -777,7 +777,7 @@ function Hero() {
     <section className="hero" id="home">
       <div className="hero-inner">
         <div className="hero-copy stagger">
-          <p className="eyebrow">Susee Agencies <span aria-hidden="true">/</span> Samsigapuram, Tamil Nadu</p>
+          <p className="eyebrow">Susee Agencies <span aria-hidden="true">/</span> Sankarapandiapuram, Tamil Nadu</p>
           <h1>Care in <em>every</em> wrap.</h1>
           <p className="hero-text">
             Thoughtfully made medical gauze and bandages, backed by personal service from our team
@@ -931,7 +931,7 @@ function AboutSection() {
           <h2>Our Mission and Vision</h2>
           <p>
             Susee Agencies manufactures medical gauze and bandages and provides onsite services.
-            Based in Samsigapuram, Tamil Nadu, we welcome enquiries from healthcare and trade
+            Based in Sankarapandiapuram, Tamil Nadu, we welcome enquiries from healthcare and trade
             customers.
           </p>
           <h2>Quality You Can Trust</h2>
@@ -972,7 +972,7 @@ function GovernmentSection() {
       <SectionHeading
         eyebrow="Manufacturing & services"
         title="Medical gauze, bandages and onsite services."
-        lead="Susee Agencies serves customers from Sankarapandiapuram, Samsigapuram, Tamil Nadu. Contact us to discuss product and service requirements."
+        lead="Susee Agencies serves customers from Sankarapandiapuram, Tamil Nadu. Contact us to discuss product and service requirements."
       />
       <div className="gov-layout">
         <div className="state-grid stagger">
@@ -1000,7 +1000,7 @@ function GovernmentSection() {
             <h3>Visit or contact our team</h3>
             <p>
               Find us at 8/162, Chatrapatti - Srivilliputhur Road, Sankarapandiapuram,
-              Samsigapuram, Tamil Nadu 626102. Our team is available during the hours listed below.
+              Tamil Nadu 626102. Our team is available during the hours listed below.
               <br /><br />{businessHours}
             </p>
           </div>
@@ -1017,7 +1017,7 @@ const qualityPoints = [
   { icon: ShieldIcon, title: 'Medical gauze', text: 'Manufacturing and supply for healthcare requirements.' },
   { icon: TruckIcon, title: 'Bandage manufacturing', text: 'Contact our team to discuss available products and quantities.' },
   { icon: TagIcon, title: 'Onsite services', text: 'Onsite service enquiries are welcome.' },
-  { icon: GlobeIcon, title: 'Local business', text: 'Serving customers from Samsigapuram, Tamil Nadu.' },
+  { icon: GlobeIcon, title: 'Local business', text: 'Serving customers from Sankarapandiapuram, Tamil Nadu.' },
 ];
 
 function QualitySection() {
@@ -1056,7 +1056,7 @@ const faqs = [
   {
     question: 'Where are we located?',
     answer:
-      '8/162, Chatrapatti - Srivilliputhur Rd, Sankarapandiapuram, Samsigapuram, Tamil Nadu 626102.',
+      '8/162, Chatrapatti - Srivilliputhur Rd, Sankarapandiapuram, Tamil Nadu 626102.',
   },
   {
     question: 'What are your business hours?',
@@ -1368,7 +1368,7 @@ const Footer = memo(function Footer() {
         <div className="footer-brand">
           <img src={`${assets}susee-logo.svg`} alt="Susee Agencies" width="350" height="250" loading="lazy" />
           <p>
-            Medical gauze and bandage manufacturer offering onsite services in Samsigapuram, Tamil Nadu.
+            Medical gauze and bandage manufacturer offering onsite services in Sankarapandiapuram, Tamil Nadu.
           </p>
         </div>
         <div>
