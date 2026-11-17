@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState, useRef, memo } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
+import { products, categories, categoryBySlug } from './data/products.js';
 
 const assets = '/assets/';
 
@@ -13,361 +14,11 @@ window.scrollTo(0, 0);
 
 // Each product's photos live in public/assets/products/<slug>/ as 1.jpg, 2.jpg, 3.jpg
 // Every product has exactly 3 photos in jpg format.
-function gallery(slug) {
-  return Array.from({ length: 3 }, (_, i) => `products/${slug}/${i + 1}.jpg`);
-}
-
-const products = [
-  {
-    slug: 'absorbent-gauze-cloth',
-    name: 'Absorbent Gauze Cloth',
-    summary: 'Soft, breathable and highly absorbent 100% pure cotton gauze fabric.',
-    description:
-      'Absorbent Gauze Cloth is a soft, breathable and highly absorbent fabric made from 100% pure cotton yarn. It is specially woven to provide superior absorbency and is used in medical dressings and wound care products.',
-    sizes: ['100cm to 120cm', '10mtr to 40mtr'],
-    features: ['100% pure cotton yarn', 'Superior absorbency', 'Breathable woven fabric', 'Soft contact surface'],
-    applications: ['Medical dressings', 'Wound care products', 'Clinical supplies'],
-    specifications: [
-      { label: 'Material', value: '100% Pure Woven Cotton' },
-      { label: 'Thread Count', value: '19 x 15 threads/inch² (or BP Type 13 / 17)' },
-      { label: 'Standard Widths', value: '100 cm, 120 cm' },
-      { label: 'Roll Lengths', value: '10 meters to 40 meters' },
-      { label: 'Sterility', value: 'Non-Sterile (Autoclavable)' },
-      { label: 'Absorption Rate', value: 'Sinks in less than 10 seconds' },
-      { label: 'Packaging', value: 'Individually wrapped rolls in master cardboard cartons' }
-    ]
-  },
-  {
-    slug: 'bandage-cloth',
-    name: 'Bandage Cloth',
-    summary: 'High-quality woven cotton fabric used in medical bandage manufacturing.',
-    description:
-      'Bandage Cloth is a high-quality woven cotton fabric used in the manufacturing of medical bandages. Made from 100% pure cotton yarn, it is breathable, soft and designed for use around fractures, surgical dressings and wound care support.',
-    sizes: ['100cm to 120cm', '10mtr to 40mtr'],
-    features: ['High-quality woven cotton', 'Soft and breathable', 'Suitable for repeated wrapping', 'Bulk roll format'],
-    applications: ['Medical bandages', 'Fracture support', 'Surgical dressing support', 'General wound care'],
-    specifications: [
-      { label: 'Material', value: '100% Cotton Woven Fabric' },
-      { label: 'Weave Type', value: 'Plain weave with selvage edge support' },
-      { label: 'Standard Widths', value: '100 cm, 120 cm' },
-      { label: 'Roll Lengths', value: '10 meters to 40 meters' },
-      { label: 'Thread Count', value: '17-thread count standard mesh' },
-      { label: 'Sterility', value: 'Non-Sterile' },
-      { label: 'Packaging', value: 'Protective inner poly sleeve with bulk transport cartons' }
-    ]
-  },
-  {
-    slug: 'roller-bandage-paper-packing',
-    name: 'Roller Bandage - Paper Packing',
-    summary: 'Roller bandage for support, secure dressing and compression.',
-    description:
-      'Roller bandages are essential medical supplies used to support injuries, secure dressings, reduce swelling and provide light compression. They are made from soft, breathable material and are suitable for quick clinical use.',
-    sizes: ['5cm', '7.5cm', '10cm', '15cm', '3mtr to 30mtr'],
-    features: ['Paper packing option', 'Easy to wrap', 'Breathable construction', 'Comfortable support'],
-    applications: ['Dressing fixation', 'Sprain support', 'Compression wrapping', 'First-aid and hospital use'],
-    specifications: [
-      { label: 'Material', value: '100% Bleached Cotton Gauze' },
-      { label: 'Widths Available', value: '5 cm, 7.5 cm, 10 cm, 15 cm' },
-      { label: 'Bandage Length', value: '3 meters, 4 meters, custom up to 30 meters' },
-      { label: 'Thread Count', value: '19 x 15 threads/inch²' },
-      { label: 'Packing Type', value: 'Individual medical-grade paper wrapping' },
-      { label: 'Sterility', value: 'Non-Sterile (Can be steam/ETO sterilized)' },
-      { label: 'Features', value: 'Easy wrap, breathable weave, soft compression' }
-    ]
-  },
-  // {
-  //   slug: 'individual-roller-bandage',
-  //   name: 'Individual Roller Bandage',
-  //   summary: 'Individually packed roller bandage for hygienic handling.',
-  //   description:
-  //     'Individual Roller Bandage is hygienically packed for safer handling. It is used by hospitals, clinics and healthcare providers to secure wound dressing and support injury management.',
-  //   sizes: ['5cm', '7.5cm', '10cm', '15cm', '3mtr to 30mtr'],
-  //   features: ['Individual packing', 'Clean handling', 'Soft and breathable', 'Easy stock management'],
-  //   applications: ['Emergency dressing', 'Ward supply', 'Clinic stock', 'Distributor packing'],
-  //   specifications: [
-  //     { label: 'Material', value: '100% Absorbent Cotton' },
-  //     { label: 'Widths Available', value: '5 cm, 7.5 cm, 10 cm, 15 cm' },
-  //     { label: 'Bandage Length', value: '3 meters to 30 meters' },
-  //     { label: 'Packing Type', value: 'Individual hygienic polybag wrap' },
-  //     { label: 'Sterility', value: 'Non-Sterile' },
-  //     { label: 'Use case', value: 'Clinic and ward dressing fixation' }
-  //   ]
-  // },
-  {
-    slug: 'gauze-mopping-pad',
-    name: 'Gauze Mopping Pad',
-    summary: 'Absorbent surgical dressing to control fluids and maintain a clear field.',
-    description:
-      'Gauze Mopping Pads are absorbent surgical dressings used primarily during operations to control bleeding, absorb fluids and maintain a clear surgical field. Made from 100% cotton gauze, these pads are designed to be soft, lint-free and highly absorbent.',
-    sizes: ['25cm x 25cm x 8ply and 12ply', '30cm x 30cm x 8ply and 12ply', '25cm x 40cm x 8ply'],
-    features: ['Sterile and non-sterile options', 'Highly absorbent', 'Soft cotton gauze', 'Surgical field support'],
-    applications: ['Operation theatre use', 'Blood and fluid absorption', 'Procedure packs', 'Hospital dressing supply'],
-    specifications: [
-      { label: 'Material', value: '100% Cotton Gauze (High Density)' },
-      { label: 'Sizes Available', value: '25cm x 25cm, 30cm x 30cm, 25cm x 40cm' },
-      { label: 'Ply Options', value: '8-ply, 12-ply, 16-ply' },
-      { label: 'Safety Feature', value: 'X-ray detectable barium sulphate thread option' },
-      { label: 'Design', value: 'Pre-washed, loop attachment for operative handling' },
-      { label: 'Sterility', value: 'Sterile (ETO) or Non-Sterile packs' },
-      { label: 'Packaging', value: 'Individually wrapped or blister-packed' }
-    ]
-  },
-  /* Products unavailable for supply are kept commented out until confirmed.
-  {
-    slug: 'gauze-dressing-pad',
-    name: 'Gauze Dressing Pad - Sterile and Non-Sterile',
-    summary: 'Medical dressing pad for wound coverage and exudate management.',
-    description:
-      'Gauze Dressing Pads are sterile or non-sterile medical dressings made from highly absorbent cotton gauze. They are used to cover and protect wounds while allowing airflow for faster healing. Designed to be soft, breathable and non-adherent, these pads are ideal for managing exudating wounds, post-surgical sites and cuts.',
-    sizes: ['10cm x 10cm', '10cm x 15cm', '10cm x 20cm'],
-    features: ['Soft wound contact', 'Breathable structure', 'Good exudate management', 'Sterile and non-sterile supply'],
-    applications: ['Wound coverage', 'Post-surgical dressing', 'Cuts and abrasions', 'Clinic dressing rooms'],
-    specifications: [
-      { label: 'Outer Material', value: 'Bleached Absorbent Cotton Gauze wrapper' },
-      { label: 'Inner Core', value: 'Highly absorbent surgical cotton wool pad' },
-      { label: 'Sizes Available', value: '10cm x 10cm, 10cm x 15cm, 10cm x 20cm' },
-      { label: 'Absorbency', value: 'Excellent fluid retention and cushioning' },
-      { label: 'Sterility', value: 'ETO Sterile and Non-Sterile available' },
-      { label: 'Packaging', value: 'Individually packed in paper/film peel pouch' }
-    ]
-  },
-  {
-    slug: 'gamjee-roll',
-    name: 'Gamjee Roll',
-    summary: 'Thick absorbent surgical dressing roll with cotton wool between gauze layers.',
-    description:
-      'Gamjee Roll is a soft, thick surgical dressing roll made by layering absorbent cotton wool between layers of gauze. It is stitched or wrapped together to form a cushioned protective roll and is commonly used in hospitals and clinics for wound care, padding and dressing retention.',
-    sizes: ['10cm x 1mtr, 2mtr, 3mtr', '15cm x 1mtr, 2mtr, 3mtr'],
-    features: ['Cushioned padding', 'High absorbency', 'Protective dressing support', 'Comfortable roll format'],
-    applications: ['Wound padding', 'Dressing retention', 'Orthopedic support', 'Post-operative dressing'],
-    specifications: [
-      { label: 'Composition', value: 'Thick surgical cotton wool rolled between outer gauze layers' },
-      { label: 'Widths Available', value: '10 cm, 15 cm' },
-      { label: 'Roll Lengths', value: '1 meter, 2 meters, 3 meters' },
-      { label: 'Layering Weight', value: '120-150 GSM thick protective layer' },
-      { label: 'Sterility', value: 'Non-Sterile (Sterilizable)' },
-      { label: 'Primary Use', value: 'Post-operative dressings, protective padding for fractures' },
-      { label: 'Packaging', value: 'Roll packed in protective craft paper sleeves' }
-    ]
-  },
-  {
-    slug: 'ribbon-gauze',
-    name: 'Ribbon Gauze',
-    summary: 'Soft, absorbent 100% pure cotton ribbon gauze in multiple widths and lengths.',
-    description:
-      'Ribbon Gauze is a soft, absorbent bandage roll made from 100% pure cotton. Available in a range of widths and lengths, it is suitable for wound dressing, securing dressings and general medical use.',
-    sizes: ['1cm', '2.5cm', '5cm', '7.5cm'],
-    features: ['100% pure cotton', 'Soft and absorbent', 'Multiple widths and lengths', 'Convenient roll packing'],
-    applications: ['Wound dressing', 'Securing dressings', 'Clinical and hospital use', 'First-aid supplies'],
-    specifications: [
-      { label: 'Sizes', value: '1 cm, 2.5 cm, 5 cm, 7.5 cm' },
-      { label: 'Lengths', value: '1 m, 2 m, 3 m, 4 m, 5 m' },
-      { label: 'Material', value: '100% pure cotton' },
-      { label: 'Packing', value: '1 roll, 5 rolls, 10 rolls' }
-    ]
-  },
-  {
-    slug: 'gauze-4-ply-roll',
-    name: 'Gauze 4 Ply Roll',
-    summary: 'Bleached white cotton gauze roll available in multiple sizes, ply options and mesh counts.',
-    description:
-      'Gauze 4 Ply Roll is made from 100% cotton and is available in bleached white, sterile and non-sterile options, with or without an X-ray detectable thread. It is used to bandage the wound, absorb exudate, and protect and isolate the wound.',
-    sizes: ['90cm x 100yds', '90cm x 100m', '90cm x 50yds', '90cm x 50m', '90cm x 2000m', 'Custom sizes available'],
-    features: ['100% cotton', 'Bleached white', 'Sterile and non-sterile options', 'With or without X-ray detectable thread'],
-    applications: ['Bandage wounds', 'Absorb wound exudate', 'Protect and isolate wounds'],
-    specifications: [
-      { label: 'Size', value: '90cm x 100yds, 90cm x 100m, 90cm x 50yds, 90cm x 50m, 90cm x 2000m, etc.' },
-      { label: 'Ply', value: '4-ply, 2-ply, 1-ply' },
-      { label: 'Mesh', value: '12 x 8 mesh, 19 x 11 mesh, 19 x 15 mesh, 26 x 18 mesh, 30 x 20 mesh, etc.' },
-      { label: 'Color', value: 'Bleached white' },
-      { label: 'Material', value: '100% cotton (40s, 32s, 21s, etc.)' },
-      { label: 'Type', value: 'Without X-ray or with X-ray detectable thread' },
-      { label: 'Sterilization', value: 'Sterile or non-sterile' },
-      { label: 'Application', value: 'Used to bandage the wound, absorb the exudate, and protect and isolate the wound' }
-    ]
-  },
-  {
-    slug: 'gauze-slitting-roll',
-    name: 'Gauze Slitting Roll',
-    summary: 'Bleached white cotton gauze roll in multiple widths, lengths and mesh options.',
-    description:
-      'Gauze Slitting Roll is made from 100% cotton and supplied in bleached white. Available in widths from 10cm to 50cm, lengths from 500m to 1000m, and plain or X-ray detectable options.',
-    sizes: ['10cm to 50cm'],
-    features: ['100% cotton', 'Bleached white', 'Multiple mesh options', 'Plain and X-ray detectable options'],
-    applications: ['Medical gauze and dressing use'],
-    specifications: [
-      { label: 'Sizes', value: '10cm to 50cm' },
-      { label: 'Length', value: '500m to 1000m' },
-      { label: 'Mesh', value: '12 x 8 mesh, 19 x 11 mesh, 19 x 15 mesh, 26 x 18 mesh, 30 x 20 mesh, etc.' },
-      { label: 'Color', value: 'Bleached white' },
-      { label: 'Material', value: '100% cotton (40s, 30s, 20s, etc.)' },
-      { label: 'Type', value: 'Plain or X-ray detectable' }
-    ]
-  },
-  {
-    slug: 'absorbent-cotton-roll',
-    name: 'Absorbent Cotton Roll',
-    summary: 'Soft, fluffy and highly absorbent 100% pure cotton medical roll.',
-    description:
-      'Absorbent Cotton Roll, also known as surgical cotton wool, is a soft, fluffy and highly absorbent medical product made from 100% pure cotton fibres. It is widely used in medical, surgical and personal care applications for wound cleaning, dressing, padding and general hygiene.',
-    sizes: ['25gm gross - 15gm net', '50gm gross - 40gm net', '100gm gross - 75gm net', '400gm gross - 300gm net', '500gm gross - 400gm net'],
-    features: ['100% pure cotton', 'Soft and fluffy', 'High fluid absorption', 'Multiple pack sizes'],
-    applications: ['Wound cleaning', 'Dressing padding', 'Hospital hygiene', 'Personal care'],
-    specifications: [
-      { label: 'Material', value: '100% Pure Bleached Surgical Cotton Wool' },
-      { label: 'Weights Available', value: '15g, 40g, 75g, 300g, 400g (Net weights)' },
-      { label: 'Absorbency Rate', value: 'Sinks in less than 3 seconds' },
-      { label: 'Whiteness', value: 'Superior natural white, chlorine bleached' },
-      { label: 'Sterility', value: 'Non-Sterile (Can be sterilized)' },
-      { label: 'Packaging', value: 'Individually wrapped in blue craft paper or moisture-proof poly bag' }
-    ]
-  },
-  */
-  {
-    slug: 'cotton-balls',
-    name: 'Cotton Balls',
-    summary: 'Soft, round and fluffy cotton balls for medical, cosmetic and personal care.',
-    description:
-      'Cotton Balls are made from 100% pure absorbent cotton. Designed for gentle use, they are ideal for medical, cosmetic and personal care applications. These balls are soft, fluffy and hygienic, making them suitable for daily professional use.',
-    sizes: ['Available on enquiry', 'Bulk and custom packing available'],
-    features: ['100% pure absorbent cotton', 'Soft round shape', 'Gentle for skin contact', 'Hygienic packing'],
-    applications: ['Medical cleaning', 'Cosmetic use', 'Personal care', 'Clinic and hospital supply'],
-    specifications: [
-      { label: 'Material', value: '100% Surgical Absorbent Cotton' },
-      { label: 'Weight per Ball', value: 'Approx. 0.5 to 1.0 grams per ball' },
-      { label: 'Consistency', value: 'Uniform round shape, soft and fluffy' },
-      { label: 'Sterility', value: 'Non-Sterile' },
-      { label: 'Packaging', value: 'Packets of 100s, 500s or custom count poly packs' }
-    ]
-  },
-  {
-    slug: 'c-arm-cover',
-    name: 'C-Arm Cover',
-    summary: 'Clear disposable protective cover for C-arm imaging equipment.',
-    description:
-      'C-Arm Cover is a clear, flexible protective cover designed to fit the imaging head of a C-arm unit. Its lightweight drape helps keep the equipment covered during clinical procedures. Contact us for sizing and packing details.',
-    sizes: ['Available on enquiry', 'Custom fit options on request'],
-    features: ['Clear flexible film', 'Protective equipment barrier', 'Designed for C-arm imaging heads', 'Disposable format'],
-    applications: ['C-arm imaging equipment', 'Procedure rooms', 'Hospital and clinic supply'],
-    specifications: [
-      { label: 'Product type', value: 'Disposable C-arm equipment cover' },
-      { label: 'Material', value: 'Transparent flexible plastic film' },
-      { label: 'Fit', value: 'C-arm imaging head; confirm dimensions when ordering' },
-      { label: 'Size', value: 'Available on enquiry' },
-      { label: 'Packaging', value: 'Contact us for available pack quantities' }
-    ]
-  },
-  {
-    slug: 'patient-gown',
-    name: 'Patient Gown',
-    summary: 'Non-woven disposable patient gown for hygiene, comfort and protection.',
-    description:
-      'This non-woven disposable patient gown is designed to provide safe, hygienic and comfortable coverage for patients during medical examination, procedures and hospital stays. Made from premium non-woven polypropylene material, it offers lightweight protection and helps prevent cross-contamination.',
-    sizes: ['S', 'M', 'L', 'XL', 'XXL', 'Custom sizing available'],
-    features: ['Non-woven polypropylene', 'Single-use hygiene', 'Lightweight and comfortable', 'Cross-contamination control'],
-    applications: ['Patient examination', 'Hospital stay', 'Procedures', 'Disposable clinical wear'],
-    specifications: [
-      { label: 'Material', value: 'Non-woven Spunbond Polypropylene (SS/SMS)' },
-      { label: 'Grammage', value: '30 to 45 GSM' },
-      { label: 'Sizes Available', value: 'S, M, L, XL, XXL' },
-      { label: 'Design', value: 'Back tie closure, round neck, short/long sleeves' },
-      { label: 'Usage', value: 'Single-use / Disposable' },
-      { label: 'Sterility', value: 'Non-Sterile' },
-      { label: 'Packaging', value: 'Individually packed in polybags, 50/100 per carton' }
-    ]
-  },
-  {
-    slug: 'surgeon-doctor-gown',
-    name: 'Surgeon / Doctor Gown',
-    summary: 'Disposable blue non-woven surgical gown for sterile operating theatre use.',
-    description:
-      'Disposable Surgeon / Doctor Gown is designed to provide full-body protection for healthcare professionals during surgical procedures. Made from premium SMS/spunbond non-woven polypropylene fabric, it offers excellent fluid resistance, breathability and barrier protection in medical environments.',
-    sizes: ['S', 'M', 'L', 'XL', 'XXL', 'Custom sizing available'],
-    features: ['SS/SMS non-woven polypropylene', 'High fluid barrier protection', 'Comfortable elastic cuffs', 'Single-use sterile packaging'],
-    applications: ['Operating theatres', 'Surgical teams', 'Infection control departments', 'Clinical laboratories'],
-    specifications: [
-      { label: 'Material', value: 'Disposable Non-woven Polypropylene (SS/SMS)' },
-      { label: 'Fabric Weight', value: '35 to 50 GSM' },
-      { label: 'Color', value: 'Medical Blue' },
-      { label: 'Cuff Style', value: 'Soft elasticated knitted cuffs' },
-      { label: 'Design Details', value: 'Full back wrap-around with overlap, secure waist ties' },
-      { label: 'Sterility', value: 'ETO Sterile option or Non-Sterile available' },
-      { label: 'Packaging', value: 'Individually wrapped pouches, 50 gowns per master carton' }
-    ]
-  },
-  {
-    slug: 'disposables-bed-sheet-pillow-cover',
-    name: 'Disposables - Bed Sheet and Pillow Covers',
-    summary: 'Disposable bed sheet and pillow cover supplies for hospital hygiene.',
-    description:
-      'Disposable bed sheets and pillow covers support clean, safe and hygienic patient care environments. They are useful for hospitals, clinics, procedure rooms and patient handling areas where quick replacement and contamination control are important.',
-    sizes: ['Available on enquiry', 'Bulk supply available', 'Custom packing available'],
-    features: ['Single-use hygiene', 'Easy replacement', 'Hospital-friendly supply', 'Custom packing support'],
-    applications: ['Patient beds', 'Procedure rooms', 'Clinic hygiene', 'Disposable hospital supply'],
-    specifications: [
-      { label: 'Material', value: 'Spunbond Non-Woven Polypropylene (Hydrophobic)' },
-      { label: 'Bed Sheet Size', value: '120 cm x 200 cm (Custom hospital sizing available)' },
-      { label: 'Pillow Cover Size', value: '50 cm x 75 cm' },
-      { label: 'Fabric Density', value: '25 to 40 GSM' },
-      { label: 'Colors Available', value: 'Medical Blue, Forest Green, White' },
-      { label: 'Sterility', value: 'Non-Sterile (Single-use)' },
-      { label: 'Packaging', value: '10 pieces per inner pack, 100 sheets per master pack' }
-    ]
-  },
-  // {
-  //   slug: 'dialysis-kit',
-  //   name: 'Dialysis Kit',
-  //   summary: 'Dialysis care kit supply for clinical and hospital requirements.',
-  //   description:
-  //     'Dialysis Kit supply is available for hospitals, dialysis centres and clinical requirements. Product configuration, packing and quantity can be customized based on buyer needs and healthcare usage.',
-  //   sizes: ['Available on enquiry', 'Custom kit configuration available'],
-  //   features: ['Clinical-use packing', 'Custom configuration', 'Bulk supply support', 'Distributor-friendly'],
-  //   applications: ['Dialysis centres', 'Hospitals', 'Clinical care kits', 'Healthcare distribution'],
-  //   specifications: [
-  //     { label: 'Kit Components', value: 'Prep drape, sterile gloves, cotton balls, forceps, drape sheet' },
-  //     { label: 'Customization', value: 'Available on enquiry as per dialysis centre lists' },
-  //     { label: 'Sterility', value: 'Sterile EO (Ethylene Oxide) processed' },
-  //     { label: 'Packaging', value: 'Medical-grade peel pouch wrap (blister pack)' },
-  //     { label: 'Certification', value: 'Sterility assurance level (SAL) 10⁻⁶' }
-  //   ]
-  // },
-].map((product) => ({
-  ...product,
-  images: gallery(product.slug),
-  image: gallery(product.slug)[0],
-}));
-
-const governmentSupplyStates = [
-  { name: 'Medical gauze', logo: 'products/absorbent-gauze-cloth/1.jpg' },
-  { name: 'Bandages', logo: 'products/bandage-cloth/1.jpg' },
-];
-
-const categories = ['All Products', 'Gauze & Bandage', 'Surgical Cotton', 'Hospital Wear & Disposables'];
-
-const categoryBySlug = {
-  'absorbent-gauze-cloth': 'Gauze & Bandage',
-  'bandage-cloth': 'Gauze & Bandage',
-  'roller-bandage-paper-packing': 'Gauze & Bandage',
-  'individual-roller-bandage': 'Gauze & Bandage',
-  'gauze-mopping-pad': 'Gauze & Bandage',
-  'gauze-dressing-pad': 'Gauze & Bandage',
-  'gamjee-roll': 'Gauze & Bandage',
-  'ribbon-gauze': 'Gauze & Bandage',
-  'gauze-4-ply-roll': 'Gauze & Bandage',
-  'gauze-slitting-roll': 'Gauze & Bandage',
-  'absorbent-cotton-roll': 'Surgical Cotton',
-  'cotton-balls': 'Surgical Cotton',
-  'patient-gown': 'Hospital Wear & Disposables',
-  'surgeon-doctor-gown': 'Hospital Wear & Disposables',
-  'disposables-bed-sheet-pillow-cover': 'Hospital Wear & Disposables',
-  'c-arm-cover': 'Hospital Wear & Disposables',
-  'dialysis-kit': 'Hospital Wear & Disposables',
-};
-
 const navItems = [
   { route: 'products', label: 'Products' },
   { route: 'about', label: 'About' },
-  { route: 'government', label: 'Services & Hours' },
+  { route: 'supply', label: 'Our Reach' },
+  { route: 'government', label: 'Services' },
   { route: 'quality', label: 'Quality' },
   { route: 'contact', label: 'Contact' },
 ];
@@ -640,7 +291,7 @@ function TopBar() {
   return (
     <div className="topbar">
       <div className="shell topbar-inner">
-        <span>Sankarapandiapuram, Tamil Nadu, India</span>
+        <span>From Sankarapandiapuram to all across Tamil Nadu</span>
         <div className="topbar-links">
           <a href={`tel:${phones[0].tel}`}><PhoneIcon size={14} /> {phones[0].display}</a>
           <a href={`mailto:${emails[0]}`}><MailIcon size={14} /> {emails[0]}</a>
@@ -764,6 +415,7 @@ function Home({ enquiryHref }) {
       <Hero />
       <ProductsSection />
       <AboutSection />
+      <SupplySection />
       <GovernmentSection />
       <QualitySection />
       <FaqSection />
@@ -773,40 +425,12 @@ function Home({ enquiryHref }) {
 }
 
 function Hero() {
-  return (
-    <section className="hero" id="home">
-      <div className="hero-inner">
-        <div className="hero-copy stagger">
-          <p className="eyebrow">Susee Agencies <span aria-hidden="true">/</span> Sankarapandiapuram, Tamil Nadu</p>
-          <h1>Care in <em>every</em> wrap.</h1>
-          <p className="hero-text">
-            Thoughtfully made medical gauze and bandages, backed by personal service from our team
-            in Tamil Nadu.
-          </p>
-          <div className="hero-actions">
-            <a className="btn btn-primary btn-lg" href="#/products">
-              Explore our products <ArrowRightIcon />
-            </a>
-            <a className="btn btn-outline btn-lg" href="#/contact">Contact sales</a>
-          </div>
-          <ul className="trust-list" aria-label="Company highlights">
-            {['Medical gauze', 'Bandage manufacturing', 'Onsite services', 'Tamil Nadu'].map((item) => (
-              <li key={item}><CheckIcon size={15} /> {item}</li>
-            ))}
-          </ul>
-        </div>
-        <div className="hero-media">
-          <img
-            src={`${assets}susee-gauze-hero.png`}
-            alt="A soft medical gauze dressing displayed against a dark background"
-            width="1146"
-            height="640"
-            fetchPriority="high"
-          />
-        </div>
-      </div>
-    </section>
-  );
+ return <section className="hero" id="home"><div className="shell hero-editorial">
+ <div className="hero-kicker"><span>MEDICAL TEXTILES & ESSENTIALS</span><span className="supply-status">SUPPLY ACROSS TAMIL NADU</span></div>
+ <div className="hero-title-row"><h1>Small essentials.<br /><em>Extraordinary care.</em></h1><div className="hero-intro"><p>From the first layer of gauze to the final wrap. Medical essentials, personal service and supply to every corner of Tamil Nadu.</p><a className="text-link" href="#/products">Discover the collection <ArrowRightIcon /></a></div></div>
+ <div className="hero-scene"><img src={assets+'susee-gauze-hero.png'} alt="Soft folds of medical gauze against a dark background" width="1146" height="640" fetchPriority="high" /><div className="scene-caption"><span>THE EVERYDAY FOUNDATION OF CARE</span><p>Woven with purpose.</p></div></div>
+ <div className="hero-footnote"><span>Gauze & bandages</span><span>Surgical cotton</span><span>Hospital wear & disposables</span><a href="#/contact">Discuss your requirements <ArrowRightIcon size={16} /></a></div>
+ </div></section>;
 }
 
 /* ========================================
@@ -822,14 +446,14 @@ function ProductCard({ product, index = 0 }) {
       style={{ '--delay': `${(index % 4) * 70}ms` }}
       href={`#/product/${product.slug}`}
     >
-      <div className="product-image">
+      <div className="product-image"><span className="product-number">{String(products.indexOf(product) + 1).padStart(2, '0')}</span>
         <img src={`${assets}${product.image}?v=15`} alt="" width="1024" height="1024" loading="lazy" decoding="async" />
       </div>
       <div className="product-body">
         <span className="product-category">{categoryBySlug[product.slug]}</span>
         <h3>{displayName(product.name)}</h3>
         <p className="product-summary">{product.summary}</p>
-        <span className="product-link">View details <ArrowRightIcon size={15} /></span>
+        <span className="product-link">Explore product <ArrowRightIcon size={18} /></span>
       </div>
     </a>
   );
@@ -859,11 +483,11 @@ function ProductsSection() {
     <Section id="products" className="band-tint">
       <div className="products-head">
         <SectionHeading
-          eyebrow="Our products"
-          title="Complete brochure product range"
-          lead="Search below or select a category to view specifications and gallery."
+          eyebrow="01 / The collection"
+          title="Essentials, thoughtfully selected."
+          lead="Find the right materials for your everyday healthcare requirements. Explore sizes, specifications and product photographs."
         />
-        <div className="search-box" role="search">
+        <div className="catalogue-tools"><a className="btn btn-outline catalogue-download" href="/catalogue/susee-agencies-catalogue.pdf" download>Download catalogue <span aria-hidden="true">&#8595;</span><small>PDF</small></a><div className="search-box" role="search">
           <SearchIcon size={18} />
           <input
             type="search"
@@ -878,7 +502,8 @@ function ProductsSection() {
         </div>
       </div>
 
-      <div className="filter-row" role="group" aria-label="Filter products by category">
+      </div>
+      <div className="catalogue-layout"><aside className="catalogue-sidebar"><p className="catalogue-label">BROWSE BY CATEGORY</p><div className="filter-row" role="group" aria-label="Filter products by category">
         {categories.map((category) => (
           <button
             key={category}
@@ -892,7 +517,7 @@ function ProductsSection() {
         ))}
       </div>
 
-      <p className="visually-hidden" aria-live="polite">
+      <div className="catalogue-help"><p>A particular size or quantity?</p><a href="#/contact">Talk to our team <ArrowRightIcon size={16} /></a></div></aside><div className="catalogue-results"><p className="catalogue-count" aria-live="polite">
         Showing {filteredProducts.length} of {products.length} products
       </p>
 
@@ -915,6 +540,7 @@ function ProductsSection() {
           </button>
         </div>
       )}
+      </div></div>
     </Section>
   );
 }
@@ -923,29 +549,33 @@ function ProductsSection() {
    About
    ======================================== */
 function AboutSection() {
+ return <Section id="about" className="story-section"><div className="story-layout">
+ <div className="story-image"><img src={assets+'products/bandage-cloth/1.jpg'} alt="Woven bandage cloth supplied by Susee Agencies" loading="lazy" /><span>ROOTED IN TAMIL NADU</span></div>
+ <div className="story-copy"><p className="eyebrow">02 / Our story</p><h2>Behind every wrap,<br /><em>a human connection.</em></h2><p>Susee Agencies brings medical gauze, bandage manufacturing and onsite services together in Sankarapandiapuram, Tamil Nadu.</p><p>Whether you are sourcing for a hospital, stocking a clinic or planning a trade order, a conversation with our team is the starting point. Tell us what you need. We will help you explore the available products, sizes and packing options.</p><a className="text-link" href="#/contact">Meet your supply partner <ArrowRightIcon /></a></div>
+ </div></Section>;
+}
+
+function SupplySection() {
   return (
-    <Section id="about">
-      <div className="about-grid">
-        <div className="about-copy stagger">
-          <p className="eyebrow">About the company</p>
-          <h2>Our Mission and Vision</h2>
-          <p>
-            Susee Agencies manufactures medical gauze and bandages and provides onsite services.
-            Based in Sankarapandiapuram, Tamil Nadu, we welcome enquiries from healthcare and trade
-            customers.
-          </p>
-          <h2>Quality You Can Trust</h2>
-          <p>
-            We use carefully selected materials and controlled manufacturing processes to produce
-            reliable surgical dressings. Every product is made with close attention to hygiene,
-            consistency and compliance for hospitals, clinics and distributors.
-          </p>
-        </div>
-        <aside className="cert-panel">
-          <h3>Our products &amp; services</h3>
-          <CertificationList />
-        </aside>
+    <Section id="supply" className="supply-section">
+      <div className="supply-heading">
+        <p className="eyebrow">OUR HOME. OUR REACH.</p>
+        <span className="supply-caption">SUSEE AGENCIES / STATEWIDE SUPPLY</span>
       </div>
+      <div className="supply-layout">
+        <div className="supply-copy">
+          <h2>Rooted here.<br /><em>Reaching everywhere.</em></h2>
+          <p>We supply medical essentials to all locations across Tamil Nadu. From city hospitals to neighbourhood clinics and trade partners, tell us where you need your order.</p>
+          <a className="btn supply-cta" href={whatsappLink()} target="_blank" rel="noopener noreferrer">Enquire about supply <ArrowRightIcon size={18} /></a>
+        </div>
+        <div className="supply-destination">
+          <span className="destination-label">WHERE WE SUPPLY</span>
+          <strong>Tamil Nadu<span>Every city. Every town.</span></strong>
+          <p>We supply across Tamil Nadu.</p>
+          <div className="destination-rule"><PinIcon size={18} /><span>Based in Sankarapandiapuram<br />Serving the entire state</span></div>
+        </div>
+      </div>
+      <div className="supply-cities"><span>Chennai</span><span>Coimbatore</span><span>Madurai</span><span>Tiruchirappalli</span><span>Salem</span><span>Tirunelveli</span><span>& every location in Tamil Nadu</span></div>
     </Section>
   );
 }
@@ -967,64 +597,30 @@ const CertificationList = memo(function CertificationList() {
    Manufacturing and services
    ======================================== */
 function GovernmentSection() {
-  return (
-    <Section id="government" className="band-tint">
-      <SectionHeading
-        eyebrow="Manufacturing & services"
-        title="Medical gauze, bandages and onsite services."
-        lead="Susee Agencies serves customers from Sankarapandiapuram, Tamil Nadu. Contact us to discuss product and service requirements."
-      />
-      <div className="gov-layout">
-        <div className="state-grid stagger">
-          {governmentSupplyStates.map((state) => (
-            <article className="state-card" key={state.name}>
-              <div className="state-logo">
-                <img
-                  src={`${assets}${state.logo}`}
-                  alt={`${state.name} product`}
-                  loading="lazy"
-                  width="96"
-                  height="96"
-                />
-              </div>
-              <div>
-                <h3>{state.name}</h3>
-                <span>Manufacturing</span>
-              </div>
-            </article>
-          ))}
-        </div>
-        <div className="export-panel services-contact-panel">
-          <div>
-            <p className="export-tag"><GlobeIcon size={15} /> Susee Agencies</p>
-            <h3>Visit or contact our team</h3>
-            <p>
-              Find us at 8/162, Chatrapatti - Srivilliputhur Road, Sankarapandiapuram,
-              Tamil Nadu 626102. Our team is available during the hours listed below.
-              <br /><br />{businessHours}
-            </p>
-          </div>
-        </div>
-      </div>
-    </Section>
-  );
+ return <Section id="government" className="service-section"><div className="service-heading"><SectionHeading eyebrow="03 / Made for your requirements" title="A simple path from enquiry to essentials." /><a className="btn btn-primary" href={whatsappLink()} target="_blank" rel="noopener noreferrer">Start a conversation <ArrowRightIcon /></a></div>
+ <div className="service-steps">{[
+ ['01','Choose your essentials','Browse gauze, bandages, cotton and disposable products. Open any product to explore its sizes and specifications.'],
+ ['02','Tell us the details','Share your required quantity, preferred sizes, packing and delivery location with our team.'],
+ ['03','Supply across Tamil Nadu','We supply to all locations in Tamil Nadu. Discuss availability and delivery arrangements directly with our team.']
+ ].map(([number,title,text])=><article key={number}><span>{number}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
+ <div className="hours-line"><span>Visit us in Sankarapandiapuram</span><span>{businessHours}</span><a href="#/contact">Get in touch <ArrowRightIcon size={16} /></a></div></Section>;
 }
 
 /* ========================================
    Quality
    ======================================== */
 const qualityPoints = [
-  { icon: ShieldIcon, title: 'Medical gauze', text: 'Manufacturing and supply for healthcare requirements.' },
-  { icon: TruckIcon, title: 'Bandage manufacturing', text: 'Contact our team to discuss available products and quantities.' },
-  { icon: TagIcon, title: 'Onsite services', text: 'Onsite service enquiries are welcome.' },
-  { icon: GlobeIcon, title: 'Local business', text: 'Serving customers from Sankarapandiapuram, Tamil Nadu.' },
+  { icon: ShieldIcon, title: 'Know your materials', text: 'Review material, size and packing information before discussing your order.' },
+  { icon: TruckIcon, title: 'Find your fit', text: 'Discuss the bandage widths and roll lengths suited to your requirements.' },
+  { icon: TagIcon, title: 'Speak to a person', text: 'Connect directly with our team for product and onsite service enquiries.' },
+  { icon: GlobeIcon, title: 'Stay connected', text: 'Reach our Tamil Nadu team by phone, email or WhatsApp during business hours.' },
 ];
 
 function QualitySection() {
   return (
     <Section id="quality" className="band-dark">
       <div className="quality-grid">
-        <SectionHeading eyebrow="Why choose us" title="Built around quality, speed and flexibility." />
+        <SectionHeading eyebrow="04 / The Susee approach" title="The details make the difference." />
         <div className="quality-list stagger">
           {qualityPoints.map(({ icon: PointIcon, title, text }) => (
             <div key={title}>
@@ -1043,6 +639,7 @@ function QualitySection() {
    FAQ
    ======================================== */
 const faqs = [
+  { question: 'Do you supply across Tamil Nadu?', answer: 'Yes. We supply to all locations across Tamil Nadu. Share your product requirements, quantity and delivery location with our team to discuss your order.' },
   {
     question: 'What products do we manufacture?',
     answer:
@@ -1070,7 +667,7 @@ function FaqSection() {
   return (
     <Section id="faq">
       <div className="faq-grid">
-        <SectionHeading eyebrow="Buyer information" title="Common questions from hospitals and distributors" />
+        <SectionHeading eyebrow="Buyer information" title="A little clarity, before we begin." />
         <div className="faq-list stagger">
           {faqs.map((item, index) => {
             const isOpen = activeIndex === index;
@@ -1313,16 +910,61 @@ function ContactRow({ icon: RowIcon, label, value, href, external }) {
   );
 }
 
+function QuickEnquiry() {
+  const [product, setProduct] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [city, setCity] = useState('');
+  const [error, setError] = useState('');
+
+  function submitEnquiry(event) {
+    event.preventDefault();
+    if (!product || !quantity.trim() || !city.trim()) {
+      setError('Please enter a product, quantity and delivery city.');
+      return;
+    }
+    setError('');
+    const message = [
+      'Hello Susee Agencies, I would like to enquire about:',
+      'Product: ' + product,
+      'Quantity: ' + quantity.trim(),
+      'Delivery city: ' + city.trim() + ', Tamil Nadu',
+      'Please share availability, pricing and delivery details.'
+    ].join('\n');
+    window.open('https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent(message), '_blank', 'noopener,noreferrer');
+  }
+
+  return (
+    <form className="quick-enquiry" onSubmit={submitEnquiry} aria-labelledby="enquiry-title">
+      <p className="eyebrow">A FEW DETAILS. A PERSONAL RESPONSE.</p>
+      <h3 id="enquiry-title">Quick enquiry</h3>
+      <p>Tell us what you need and where to supply it.</p>
+      <label htmlFor="enquiry-product">Product</label>
+      <select id="enquiry-product" required value={product} onChange={event => setProduct(event.target.value)}>
+        <option value="" disabled>Select a product</option>
+        {products.map(item => <option key={item.slug} value={item.name}>{item.name}</option>)}
+        <option value="Multiple products / general enquiry">Multiple products / general enquiry</option>
+      </select>
+      <div className="enquiry-fields">
+        <div><label htmlFor="enquiry-quantity">Quantity &amp; unit</label><input id="enquiry-quantity" required maxLength={100} placeholder="e.g. 100 rolls" value={quantity} onChange={event => setQuantity(event.target.value)} /></div>
+        <div><label htmlFor="enquiry-city">Delivery city / town</label><input id="enquiry-city" required maxLength={100} autoComplete="address-level2" placeholder="e.g. Madurai" value={city} onChange={event => setCity(event.target.value)} /></div>
+      </div>
+      {error && <p className="enquiry-error" role="alert">{error}</p>}
+      <button type="submit" className="btn btn-primary btn-block"><WhatsAppIcon /> Continue on WhatsApp</button>
+      <p className="enquiry-note">Your enquiry opens in WhatsApp. Review it and tap Send to contact our team.</p>
+    </form>
+  );
+}
+
 function Contact({ enquiryHref }) {
   return (
     <Section id="contact" className="band-tint">
       <div className="contact-card">
         <div className="contact-details">
           <p className="eyebrow">Get in touch</p>
-          <h2>Ready to place an enquiry?</h2>
+          <h2>Your next order starts here.</h2>
           <p className="lead">
             Share your product requirement, size, quantity and destination. Our team will help with
-            product details, packing and bulk supply options.
+            product details, packing and supply to any location across Tamil Nadu.
           </p>
           <div className="contact-rows stagger">
             {phones.map((phone) => (
@@ -1344,7 +986,7 @@ function Contact({ enquiryHref }) {
             <WhatsAppIcon /> WhatsApp enquiry
           </a>
         </div>
-        <div className="contact-map">
+        <div className="contact-aside"><QuickEnquiry /><div className="contact-map">
           <iframe
             title="Susee Agencies location map"
             src={`https://www.google.com/maps?q=${mapQuery}&output=embed`}
@@ -1352,7 +994,7 @@ function Contact({ enquiryHref }) {
             referrerPolicy="no-referrer-when-downgrade"
             allowFullScreen
           />
-        </div>
+        </div></div>
       </div>
     </Section>
   );
@@ -1366,9 +1008,9 @@ const Footer = memo(function Footer() {
     <footer className="site-footer">
       <div className="shell footer-grid">
         <div className="footer-brand">
-          <img src={`${assets}susee-logo.svg`} alt="Susee Agencies" width="350" height="250" loading="lazy" />
+          <img src={`${assets}susee-logo-light.svg`} alt="Susee Agencies" width="590" height="120" loading="lazy" />
           <p>
-            Medical gauze and bandage manufacturer offering onsite services in Sankarapandiapuram, Tamil Nadu.
+            Medical gauze and bandage manufacturer based in Sankarapandiapuram. Supplying medical essentials across Tamil Nadu, with onsite services available by enquiry.
           </p>
         </div>
         <div>
@@ -1386,6 +1028,7 @@ const Footer = memo(function Footer() {
               <li key={product.slug}><a href={`#/product/${product.slug}`}>{displayName(product.name)}</a></li>
             ))}
             <li><a href="#/products" onClick={rescrollIfCurrent}>View all products</a></li>
+            <li><a href="/catalogue/susee-agencies-catalogue.pdf" download>Download catalogue (PDF)</a></li>
           </ul>
         </div>
         <div>
